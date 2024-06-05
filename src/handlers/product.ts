@@ -3,30 +3,22 @@ import { Request, Response } from "express"
 import Proudct from "../models/Product.model"
 
 export const getProducts = async (req: Request, res: Response) => {
-    try {
-        const products = await Proudct.findAll({
-            order: [
-                ['price', 'DESC']
-            ]
-        })
-        res.json({ data: products })
-    } catch (error) {
-        console.log(error)
-    }
+    const products = await Proudct.findAll({
+        order: [
+            ['price', 'DESC']
+        ]
+    })
+    res.json({ data: products })
 }
 
 export const getProductById = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params
-        const produc = await Proudct.findByPk(id)
+    const { id } = req.params
+    const produc = await Proudct.findByPk(id)
 
-        if (!produc) {
-            return res.status(404).json({ error: 'No encontrado' })
-        }
-
-    } catch (error) {
-        console.log(error)
+    if (!produc) {
+        return res.status(404).json({ error: 'No encontrado' })
     }
+    res.json({ data: produc })
 }
 
 export const createProduct = async (req: Request, res: Response) => {
@@ -45,16 +37,8 @@ export const createProduct = async (req: Request, res: Response) => {
     //     return res.status(400).json({ errors: errors.array() })
     // }
 
-    try {
-        const product = await Proudct.create(req.body)
-        res.json({ data: product })
-
-    } catch (error) {
-        console.log(error)
-    }
-
-
-
+    const product = await Proudct.create(req.body)
+    res.status(201).json({ data: product })
 }
 
 export const updateProduct = async (req: Request, res: Response) => {
