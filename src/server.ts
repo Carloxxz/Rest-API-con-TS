@@ -1,4 +1,6 @@
 import express from "express";
+import cors, { CorsOptions } from "cors"
+import morgan from "morgan"
 import swaggerUi from "swagger-ui-express"
 import swaggerSpec, { swaggerUiOptions } from "./config/swagger";
 import db from "./config/db";
@@ -19,6 +21,21 @@ connectDB()
 
 // Instanxcia de express
 const server = express()
+
+// Permitir conexiones
+server.use(morgan('dev'))
+const corsOptions: CorsOptions = {
+    origin: (origin, callback) => {
+        if (origin === process.env.FRONTEND_URL) {
+            console.log('permitir')
+            callback(null, true)
+        } else {
+            console.log('Denegar...')
+            callback(new Error ('Error de CORS'))
+        }
+    }
+}
+server.use(cors(corsOptions))
 
 // Leer datos de formularios middleware
 server.use(express.json())

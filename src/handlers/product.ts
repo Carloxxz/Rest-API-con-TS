@@ -5,7 +5,7 @@ import Proudct from "../models/Product.model"
 export const getProducts = async (req: Request, res: Response) => {
     const products = await Proudct.findAll({
         order: [
-            ['price', 'DESC']
+            ['id', 'DESC']
         ]
     })
     res.json({ data: products })
